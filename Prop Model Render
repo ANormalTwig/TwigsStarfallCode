@@ -8,11 +8,14 @@ if SERVER then
     
 else
     //Client
-    local function propToMesh(ModelName,Material,booleanURL)
+    local function propToMesh(ModelName,Material,booleanURL,offsetVector)
         local visualMeshes = mesh.getModelMeshes(ModelName)
         if visualMeshes[1]==nil then return end
         for k, v in ipairs(visualMeshes[1].triangles) do
             v.weights = nil
+            if offsetVector then
+                v.pos = v.pos+offsetVector
+            end
         end
         
         local model = mesh.createFromTable(visualMeshes[1].triangles)
@@ -26,7 +29,7 @@ else
         a["Material"] = mat
         return a
     end
-    //Usage: propToMesh(PropModelPath,Material,OptionalBooleanURL[DefualtFalse])
+    //Usage: propToMesh(PropModelPath,Material,BooleanURL,OptionalOffsetVector)
     
     local function advDraw(DatTbl,Pos,Ang,Scale,isWorld)
         if DatTbl then
@@ -54,14 +57,8 @@ else
     // Usage: advDraw(PropToMeshTable,VectorPosition,Angle,OptionalScaleVector,OptionalBooleanWorld)
     
     prop1 = propToMesh("models/props_c17/oildrum001.mdl","models/props_c17/oil_drum001a")
-    prop2 = propToMesh("models/props_c17/FurnitureWashingmachine001a.mdl","models/props_lab/cornerunit_cloud")
-    prop3 = propToMesh("models/props_junk/TrafficCone001a.mdl","models/wireframe")
-    prop4 = propToMesh("models/sprops/rectangles/size_6/rect_96x96x3.mdl","phoenix_storms/ps_grass")
     
     hook.add("render","",function()
-        advDraw(prop1,Vector(230,512,256),Angle(90,0,90),Vector(5.5))
-        advDraw(prop2,Vector(400,400,256),Angle(timer.systime()*20,0,90),Vector(5.5))
-        advDraw(prop3,Vector(80,420,256),Angle(90,0,90),Vector(5.5))
-        advDraw(prop4,Vector(256,512,256),Angle(90,0,90),Vector(5.5))
+        advDraw(prop1,chip():getPos(),chip():getAngles(),Vector(1),true)
     end)
 end
