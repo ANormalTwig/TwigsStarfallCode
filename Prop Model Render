@@ -20,9 +20,9 @@ else
         
         local model = mesh.createFromTable(visualMeshes[1].triangles)
         if booleanURL then
-            local mat = render.createMaterial(Material)
+            mat = render.createMaterial(Material)
         else
-            local mat = material.load(Material)
+            mat = material.load(Material)
         end
         local a = {}
         a["Model"] = model
