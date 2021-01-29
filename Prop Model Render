@@ -8,14 +8,11 @@ if SERVER then
     
 else
     //Client
-    local function propToMesh(ModelName,Material,offsetVector,booleanURL)
+    local function propToMesh(ModelName,Material,booleanURL)
         local visualMeshes = mesh.getModelMeshes(ModelName)
         if visualMeshes[1]==nil then return end
         for k, v in ipairs(visualMeshes[1].triangles) do
             v.weights = nil
-            if offsetVector then
-                v.pos = v.pos+offsetVector
-            end
         end
         
         local model = mesh.createFromTable(visualMeshes[1].triangles)
@@ -29,7 +26,7 @@ else
         a["Material"] = mat
         return a
     end
-    //Usage: propToMesh(PropModelPath,Material,OptionalOffsetVector,OptionalBooleanURL[DefualtFalse])
+    //Usage: propToMesh(PropModelPath,Material,OptionalBooleanURL[DefualtFalse])
     
     local function advDraw(DatTbl,Pos,Ang,Scale,isWorld)
         if DatTbl then
